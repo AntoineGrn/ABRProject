@@ -1,15 +1,17 @@
 package model;
 
+import java.util.List;
+
 public class ABR {
 	private int debut;
 	private int fin;
-	private int[] parcoursSuffixe;
+	private List<Integer> parcoursSuffixe;
 	
 	public ABR() {
 		
 	}
 	
-	public ABR(int debut, int fin, int[] parcoursSuffixe) {
+	public ABR(int debut, int fin, List<Integer> parcoursSuffixe) {
 		super();
 		this.debut = debut;
 		this.fin = fin;
@@ -27,34 +29,21 @@ public class ABR {
 	}
 	public void setFin(int fin) {
 		this.fin = fin;
-	}
-	public int[] getParcoursSuffixe() {
+	}	
+
+	public List<Integer> getParcoursSuffixe() {
 		return parcoursSuffixe;
 	}
-	public void setParcoursSuffixe(int[] parcoursSuffixe) {
+
+	public void setParcoursSuffixe(List<Integer> parcoursSuffixe) {
 		this.parcoursSuffixe = parcoursSuffixe;
 	}
 
+	@Override
 	public String toString() {
-		return "ABR [debut="
-				+ debut
-				+ ", fin="
-				+ fin
-				+ ", parcoursSuffixe="
-				+ (parcoursSuffixe != null ? arrayToString(parcoursSuffixe,
-						parcoursSuffixe.length) : null) + "]";
+		return "ABR [debut=" + debut + ", fin=" + fin + ", parcoursSuffixe="
+				+ parcoursSuffixe + "]";
 	}
 
-	private String arrayToString(Object array, int len) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[");
-		for (int i = 0; i < len; i++) {
-			if (i > 0)
-				buffer.append(", ");
-			if (array instanceof int[])
-				buffer.append(((int[]) array)[i]);
-		}
-		buffer.append("]");
-		return buffer.toString();
-	}
+	
 }
