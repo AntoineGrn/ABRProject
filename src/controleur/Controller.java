@@ -27,4 +27,8 @@ public class Controller {
 	        System.out.println(line);
 	    }
 	}
+
+	public void createFileABR(ABR tabArbre) {
+
+	}
 }

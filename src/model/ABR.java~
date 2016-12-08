@@ -1,6 +1,7 @@
 package model;
 
 public class ABR {
+<<<<<<< HEAD
 	private int debut;
 	private int fin;
 	private int[] parcoursSuffixe;
@@ -57,4 +58,42 @@ public class ABR {
 		buffer.append("]");
 		return buffer.toString();
 	}
+	
+	
+	
+=======
+    private int debut;
+    private int fin;
+    private  int[] parcoursSuffixe;
+
+    public ABR(int debut, int fin, int[] parcoursSuffixe) {
+        this.debut = debut;
+        this.fin = fin;
+        this.parcoursSuffixe = parcoursSuffixe;
+    }
+
+    public int getDebut() {
+        return debut;
+    }
+
+    public void setDebut(int debut) {
+        this.debut = debut;
+    }
+
+    public int getFin() {
+        return fin;
+    }
+
+    public void setFin(int fin) {
+        this.fin = fin;
+    }
+
+    public int[] getParcoursSuffixe() {
+        return parcoursSuffixe;
+    }
+
+    public void setParcoursSuffixe(int[] parcoursSuffixe) {
+        this.parcoursSuffixe = parcoursSuffixe;
+    }
+>>>>>>> 4777528bb789f6a76984294e22b64e5f45c003ce
 }
