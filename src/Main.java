@@ -7,6 +7,6 @@ public class Main {
 	public static void main (String[] args) throws IOException, URISyntaxException{
 		Controller myController = new Controller();
 	    System.out.println("Hello World");
-	    myController.readFileABR("./exemples.figure1.txt");
+	    myController.readFileABR("/comptes/E136217M/Documents/Complement Algo/ABRProject/src/figure1.txt");
 	}
 }
