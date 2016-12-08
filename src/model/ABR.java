@@ -36,25 +36,22 @@ public class ABR {
 	}
 
 	public String toString() {
-		return "ABR [debut="
-				+ debut
-				+ ", fin="
+		return  debut
+				+ ":"
 				+ fin
-				+ ", parcoursSuffixe="
+				+ ";"
 				+ (parcoursSuffixe != null ? arrayToString(parcoursSuffixe,
-						parcoursSuffixe.length) : null) + "]";
+						parcoursSuffixe.length) : null);
 	}
 
 	private String arrayToString(Object array, int len) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("[");
 		for (int i = 0; i < len; i++) {
 			if (i > 0)
-				buffer.append(", ");
+				buffer.append(":");
 			if (array instanceof int[])
 				buffer.append(((int[]) array)[i]);
 		}
-		buffer.append("]");
 		return buffer.toString();
 	}
 }
