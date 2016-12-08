@@ -41,8 +41,7 @@ public class ABR {
 
 	@Override
 	public String toString() {
-		return "ABR [debut=" + debut + ", fin=" + fin + ", parcoursSuffixe="
-				+ parcoursSuffixe + "]";
+		return debut + ":" + fin + ";" + parcoursSuffixe.toString().replace(", ", ":").replace("[", "").replace("]", "");
 	}
 
 }

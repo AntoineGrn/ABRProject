@@ -38,7 +38,8 @@ public class Controller {
 		File f = new File("bin/exemples/figure1.txt");
 		try
 		{
-			FileWriter fw = new FileWriter (f);
+			FileWriter fw = new FileWriter (f, true);
+			System.out.println(tabArbre.toString());
 			fw.write (tabArbre.toString());
 			fw.write ("\r\n");
 
