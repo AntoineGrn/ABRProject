@@ -1,6 +1,9 @@
 package controleur;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import model.ABR;
+
 public class Controller {
 	
 	public Controller() {
@@ -18,12 +23,9 @@ public class Controller {
 	
 	
 	public void readFileABR(String filename) throws IOException, URISyntaxException {
-		URI file = new URI(filename);
-		Path path = Paths.get(file);
-		InputStream in = Files.newInputStream(path, null);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		BufferedReader br = new BufferedReader(new FileReader("bin/exemples/figure1.txt"));
 	    String line = null;
-	    while ((line = reader.readLine()) != null) {
+	    while ((line = br.readLine()) != null) {
 	        System.out.println(line);
 	    }
 	}
