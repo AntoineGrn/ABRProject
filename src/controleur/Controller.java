@@ -1,23 +1,19 @@
 package controleur;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import model.ABR;
 import model.TabABR;
 
 public class Controller {
+	List<Integer> parcoursSuffixe = new ArrayList<Integer>();
 
 	public Controller() {
 		
 	}
 
-	public void readFileABR(String filename) throws IOException, URISyntaxException {
+	public void readFileABR(String filename) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 	    String line = null;
 	    List<TabABR> listTab = new ArrayList<TabABR>();
@@ -26,12 +22,12 @@ public class Controller {
 	    	String debut = ligneSpliter[0].split(":")[0];
 	    	String fin = ligneSpliter[0].split(":")[1];
 	        String[] suffixe = ligneSpliter[1].split(":");
-	      
-	        List<Integer> parcoursSuffixe = new ArrayList();
+
+	        List<Integer> parcoursSuffixe = new ArrayList<Integer>();
 			for(int i = 0; i < suffixe.length; i++) {
 	        	parcoursSuffixe.add(Integer.parseInt(suffixe[i]));
 	        }
-			
+
 	        TabABR tabr = new TabABR();
 	        tabr = this.createTabABR(Integer.parseInt(debut), Integer.parseInt(fin), parcoursSuffixe);
 	        listTab.add(tabr);
@@ -43,8 +39,7 @@ public class Controller {
 		try
 		{
 			FileWriter fw = new FileWriter (f, true);
-			System.out.println(tabArbre.toString());
-			fw.write (tabArbre.toString());
+			fw.write (toStringForWrite(tabArbre));
 			fw.write ("\r\n");
 
 			fw.close();
@@ -55,12 +50,12 @@ public class Controller {
 		}
 	}
 
-	public void displayTABR(TabABR tableauABR) {
-		/*for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
+	/*public void displayTABR(TabABR tableauABR) {
+		for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
 			System.out.println(iterator);
-		}*/
-	}
-	
+		}
+	}*/
+
 	public TabABR createTabABR(int debut, int fin, List<Integer> parcoursSuffixe) {
 		TabABR tabr = new TabABR();
 		tabr.setFin(fin);
@@ -69,9 +64,9 @@ public class Controller {
         tabr.setArbre(abr);
         System.out.println(this.toStringTABR(tabr));
 		return tabr;
-		
+
 	}
-	
+
 	public ABR createABR(List<Integer> parcoursSuffixe) {
 		ABR abr = new ABR();
 		abr.setRacine(parcoursSuffixe.get(parcoursSuffixe.size()-1));
@@ -100,6 +95,33 @@ public class Controller {
 		}
 		//System.out.println(this.toStringABR(abr));
 		return abr;
+	}
+
+	public List<Integer> getParcoursSuffixe(ABR abr) {
+
+		if (abr.getSag() != null){
+			this.parcoursSuffixe = getParcoursSuffixe(abr.getSag());
+		}
+		if (abr.getSad() != null) {
+			this.parcoursSuffixe = getParcoursSuffixe(abr.getSad());
+		}
+		this.parcoursSuffixe.add(abr.getRacine());
+
+		return parcoursSuffixe;
+	}
+
+	public String toStringForWrite(ABR abr) {
+		List<Integer> list = this.getParcoursSuffixe(abr);
+		System.out.println(list.toString().replace("[", "").replace("]", "").replace(", ",":"));
+		int min = list.get(0);
+		int max = list.get(0);
+
+		for(Integer i: list) {
+			if (i < min) min = i;
+			if (i > max) max = i;
+		}
+
+		return min + ":" + max + ";" + list.toString().replace("[", "").replace("]", "").replace(", ",":");
 	}
 	
 	public String toStringTABR(TabABR tabr){

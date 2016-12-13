@@ -39,11 +39,4 @@ public class ABR {
 	public void setSad(ABR sad) {
 		this.sad = sad;
 	}
-
-	@Override
-	public String toString() {
-		return "ABR [racine=" + racine + ", sag=" + sag + ", sad=" + sad + "]";
-	}
-	
-	
 }
