@@ -1,21 +1,18 @@
 package controleur;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import model.ABR;
-import model.TabABR;
 
 public class Controller {
+	List<Integer> parcoursSuffixe = new ArrayList<>();
 	
 	public Controller() {
 		
 	}
 
-	public void readFileABR(String filename) throws IOException, URISyntaxException {
+	/*public void readFileABR(String filename) throws IOException, URISyntaxException {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 	    String line = null;
 	    while ((line = br.readLine()) != null) {
@@ -34,15 +31,14 @@ public class Controller {
 	        }
 	        abr.setParcoursSuffixe(parcoursSuffixe);
 	    }
-	}
+	}*/
 
 	public void createFileABR(ABR tabArbre) {
 		File f = new File("bin/exemples/figure1.txt");
 		try
 		{
 			FileWriter fw = new FileWriter (f, true);
-			System.out.println(tabArbre.toString());
-			fw.write (tabArbre.toString());
+			fw.write (toStringForWrite(tabArbre));
 			fw.write ("\r\n");
 
 			fw.close();
@@ -53,9 +49,36 @@ public class Controller {
 		}
 	}
 
-	public void displayTABR(TabABR tableauABR) {
+	/*public void displayTABR(TabABR tableauABR) {
 		for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
 			System.out.println(iterator);
 		}
+	}*/
+
+	public List<Integer> getParcoursSuffixe(ABR abr) {
+
+		if (abr.getSag() != null){
+			this.parcoursSuffixe = getParcoursSuffixe(abr.getSag());
+		}
+		if (abr.getSad() != null) {
+			this.parcoursSuffixe = getParcoursSuffixe(abr.getSad());
+		}
+		this.parcoursSuffixe.add(abr.getRacine());
+
+		return parcoursSuffixe;
+	}
+
+	public String toStringForWrite(ABR abr) {
+		List<Integer> list = this.getParcoursSuffixe(abr);
+		System.out.println(list.toString().replace("[", "").replace("]", "").replace(", ",":"));
+		int min = list.get(0);
+		int max = list.get(0);
+
+		for(Integer i: list) {
+			if (i < min) min = i;
+			if (i > max) max = i;
+		}
+
+		return min + ":" + max + ";" + list.toString().replace("[", "").replace("]", "").replace(", ",":");
 	}
 }
