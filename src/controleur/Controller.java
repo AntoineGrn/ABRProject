@@ -1,6 +1,7 @@
 package controleur;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import model.ABR;
@@ -13,7 +14,7 @@ public class Controller {
 		
 	}
 
-	public void readFileABR(String filename) throws IOException {
+	public void readFileABR(String filename) throws IOException, URISyntaxException {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 	    String line = null;
 	    List<TabABR> listTab = new ArrayList<TabABR>();
