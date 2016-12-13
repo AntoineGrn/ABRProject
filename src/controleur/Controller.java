@@ -3,9 +3,11 @@ package controleur;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import model.ABR;
+import model.TabABR;
 
 public class Controller {
 	
@@ -48,6 +50,12 @@ public class Controller {
 		catch (IOException exception)
 		{
 			System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
+		}
+	}
+
+	public void displayTABR(TabABR tableauABR) {
+		for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
+			System.out.println(iterator);
 		}
 	}
 }

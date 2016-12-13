@@ -1,47 +1,42 @@
 package model;
 
-import java.util.List;
-
 public class ABR {
-	private int debut;
-	private int fin;
-	private List<Integer> parcoursSuffixe;
+	private int racine;
+	private ABR sag;
+	private ABR sad;
 	
 	public ABR() {
 		
 	}
 	
-	public ABR(int debut, int fin, List<Integer> parcoursSuffixe) {
+	public ABR(int racine, ABR sag, ABR sad) {
 		super();
-		this.debut = debut;
-		this.fin = fin;
-		this.parcoursSuffixe = parcoursSuffixe;
-	}
-	
-	public int getDebut() {
-		return debut;
-	}
-	public void setDebut(int debut) {
-		this.debut = debut;
-	}
-	public int getFin() {
-		return fin;
-	}
-	public void setFin(int fin) {
-		this.fin = fin;
-	}	
-
-	public List<Integer> getParcoursSuffixe() {
-		return parcoursSuffixe;
+		this.racine = racine;
+		this.sad = sad;
+		this.sag = sag;
 	}
 
-	public void setParcoursSuffixe(List<Integer> parcoursSuffixe) {
-		this.parcoursSuffixe = parcoursSuffixe;
+	public int getRacine() {
+		return racine;
 	}
 
-	@Override
-	public String toString() {
-		return debut + ":" + fin + ";" + parcoursSuffixe.toString().replace(", ", ":").replace("[", "").replace("]", "");
+	public void setRacine(int racine) {
+		this.racine = racine;
 	}
 
+	public ABR getSag() {
+		return sag;
+	}
+
+	public void setSag(ABR sag) {
+		this.sag = sag;
+	}
+
+	public ABR getSad() {
+		return sad;
+	}
+
+	public void setSad(ABR sad) {
+		this.sad = sad;
+	}
 }

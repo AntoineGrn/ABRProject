@@ -1,22 +1,37 @@
 package model;
-import java.util.List;
-
-import model.ABR;
 
 public class TabABR {
-	private List<ABR> listeABR;
+	private int debut;
+	private int fin;
+	private ABR arbre;
 
-	public TabABR() {
-		
-	}
-	
-	public List<ABR> getListeABR() {
-		return listeABR;
+	public TabABR(int debut, int fin, ABR arbre) {
+		this.debut = debut;
+		this.fin = fin;
+		this.arbre = arbre;
 	}
 
-	public void setListeABR(List<ABR> listeABR) {
-		this.listeABR = listeABR;
+	public int getDebut() {
+		return debut;
 	}
-	
-	
+
+	public void setDebut(int debut) {
+		this.debut = debut;
+	}
+
+	public int getFin() {
+		return fin;
+	}
+
+	public void setFin(int fin) {
+		this.fin = fin;
+	}
+
+	public ABR getArbre() {
+		return arbre;
+	}
+
+	public void setArbre(ABR arbre) {
+		this.arbre = arbre;
+	}
 }
