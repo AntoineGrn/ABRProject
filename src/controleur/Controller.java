@@ -23,7 +23,7 @@ public class Controller {
 	    	String fin = ligneSpliter[0].split(":")[1];
 	        String[] suffixe = ligneSpliter[1].split(":");
 
-	        List<Integer> parcoursSuffixe = new ArrayList<Integer>();
+	        List<Integer> parcoursSuffixe = new ArrayList();
 			for(int i = 0; i < suffixe.length; i++) {
 	        	parcoursSuffixe.add(Integer.parseInt(suffixe[i]));
 	        }
@@ -49,12 +49,6 @@ public class Controller {
 			System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
 		}
 	}
-
-	/*public void displayTABR(TabABR tableauABR) {
-		for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
-			System.out.println(iterator);
-		}
-	}*/
 
 	public TabABR createTabABR(int debut, int fin, List<Integer> parcoursSuffixe) {
 		TabABR tabr = new TabABR();
@@ -123,11 +117,11 @@ public class Controller {
 
 		return min + ":" + max + ";" + list.toString().replace("[", "").replace("]", "").replace(", ",":");
 	}
-	
+
 	public String toStringTABR(TabABR tabr){
 		return tabr.getDebut() + ":" + tabr.getFin() + ";" + this.toStringABR(tabr.getArbre());
 	}
-	
+
 	public String toStringABR(ABR abr) {
 		String result = "";
 		if (abr.getSag() != null){
@@ -138,4 +132,8 @@ public class Controller {
 		}
 		return result + abr.getRacine();
 	}
+
+	/*public TabABR generateTabABR(int n, int m) {
+
+	}*/
 }
