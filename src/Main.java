@@ -14,7 +14,7 @@ public class Main {
 		parcoursSuffixe.add(11);
 		parcoursSuffixe.add(14);
 		parcoursSuffixe.add(9);
-		ABR abr = new ABR(9, 22, parcoursSuffixe);
-		myController.createFileABR(abr);
+		//ABR abr = new ABR(9, 22, parcoursSuffixe);
+		//myController.createFileABR(abr);
 	}
 }

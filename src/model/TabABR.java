@@ -5,6 +5,11 @@ public class TabABR {
 	private int fin;
 	private ABR arbre;
 
+	
+	
+	public TabABR() {
+	}
+
 	public TabABR(int debut, int fin, ABR arbre) {
 		this.debut = debut;
 		this.fin = fin;
