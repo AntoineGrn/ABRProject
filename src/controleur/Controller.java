@@ -67,6 +67,7 @@ public class Controller {
         tabr.setDebut(debut);
         ABR abr = this.createABR(parcoursSuffixe);
         tabr.setArbre(abr);
+        System.out.println(this.toStringTABR(tabr));
 		return tabr;
 		
 	}
@@ -97,6 +98,22 @@ public class Controller {
 				abr.setSad(null);
 			}
 		}
+		//System.out.println(this.toStringABR(abr));
 		return abr;
+	}
+	
+	public String toStringTABR(TabABR tabr){
+		return tabr.getDebut() + ":" + tabr.getFin() + ";" + this.toStringABR(tabr.getArbre());
+	}
+	
+	public String toStringABR(ABR abr) {
+		String result = "";
+		if (abr.getSag() != null){
+			result = this.toStringABR(abr.getSag()) + ":";
+		}
+		if (abr.getSad() != null){
+			result = result + this.toStringABR(abr.getSad()) + ":";
+		}
+		return result + abr.getRacine();
 	}
 }
