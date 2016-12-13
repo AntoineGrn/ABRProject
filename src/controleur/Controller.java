@@ -3,11 +3,14 @@ package controleur;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import model.ABR;
 
 public class Controller {
 	List<Integer> parcoursSuffixe = new ArrayList<>();
-	
+
 	public Controller() {
 		
 	}
@@ -15,21 +18,21 @@ public class Controller {
 	/*public void readFileABR(String filename) throws IOException, URISyntaxException {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 	    String line = null;
+	    List<TabABR> listTab = new ArrayList<TabABR>();
 	    while ((line = br.readLine()) != null) {
 	    	String[] ligneSpliter = line.split(";");
 	    	String debut = ligneSpliter[0].split(":")[0];
 	    	String fin = ligneSpliter[0].split(":")[1];
 	        String[] suffixe = ligneSpliter[1].split(":");
-	        
-	        ABR abr = new ABR();
-	        abr.setDebut(Integer.parseInt(debut));
-	        abr.setFin(Integer.parseInt(fin));
-	        
+
 	        List<Integer> parcoursSuffixe = new ArrayList();
 			for(int i = 0; i < suffixe.length; i++) {
 	        	parcoursSuffixe.add(Integer.parseInt(suffixe[i]));
 	        }
-	        abr.setParcoursSuffixe(parcoursSuffixe);
+
+	        TabABR tabr = new TabABR();
+	        tabr = this.createTabABR(Integer.parseInt(debut), Integer.parseInt(fin), parcoursSuffixe);
+	        listTab.add(tabr);
 	    }
 	}*/
 
@@ -52,8 +55,47 @@ public class Controller {
 	/*public void displayTABR(TabABR tableauABR) {
 		for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
 			System.out.println(iterator);
+		}*/
+	}
+
+	public TabABR createTabABR(int debut, int fin, List<Integer> parcoursSuffixe) {
+		TabABR tabr = new TabABR();
+		tabr.setFin(fin);
+        tabr.setDebut(debut);
+        ABR abr = this.createABR(parcoursSuffixe);
+        tabr.setArbre(abr);
+		return tabr;
+
+	}
+
+	public ABR createABR(List<Integer> parcoursSuffixe) {
+		ABR abr = new ABR();
+		abr.setRacine(parcoursSuffixe.get(parcoursSuffixe.size()-1));
+		if(parcoursSuffixe.size() != 1) {
+			List<Integer> inferieur = new ArrayList<Integer>();
+			List<Integer> superieur = new ArrayList<Integer>();
+			for(int index=parcoursSuffixe.size()-1; index >= 0; index--) {
+				if (parcoursSuffixe.get(index) < abr.getRacine()) {
+					inferieur.add(parcoursSuffixe.get(index));
+				}else if (parcoursSuffixe.get(index) > abr.getRacine()) {
+					superieur.add(parcoursSuffixe.get(index));
+				}
+			}
+			if (inferieur.size() > 0) {
+				ABR abrsag = this.createABR(inferieur);
+				abr.setSag(abrsag);
+			}else {
+				abr.setSag(null);
+			}
+			if (superieur.size() > 0){
+				ABR abrsad = this.createABR(superieur);
+				abr.setSad(abrsad);
+			}else {
+				abr.setSad(null);
+			}
 		}
-	}*/
+        return abr;
+	}
 
 	public List<Integer> getParcoursSuffixe(ABR abr) {
 

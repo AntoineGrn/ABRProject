@@ -41,5 +41,4 @@ public class ABR {
 	public void setSad(ABR sad) {
 		this.sad = sad;
 	}
-
 }
