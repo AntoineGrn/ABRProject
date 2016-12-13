@@ -3,10 +3,8 @@ package controleur;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import model.ABR;
+import model.TabABR;
 
 public class Controller {
 	List<Integer> parcoursSuffixe = new ArrayList<>();
@@ -15,7 +13,7 @@ public class Controller {
 		
 	}
 
-	/*public void readFileABR(String filename) throws IOException, URISyntaxException {
+	public void readFileABR(String filename) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 	    String line = null;
 	    List<TabABR> listTab = new ArrayList<TabABR>();
@@ -25,7 +23,7 @@ public class Controller {
 	    	String fin = ligneSpliter[0].split(":")[1];
 	        String[] suffixe = ligneSpliter[1].split(":");
 
-	        List<Integer> parcoursSuffixe = new ArrayList();
+	        List<Integer> parcoursSuffixe = new ArrayList<>();
 			for(int i = 0; i < suffixe.length; i++) {
 	        	parcoursSuffixe.add(Integer.parseInt(suffixe[i]));
 	        }
@@ -34,7 +32,7 @@ public class Controller {
 	        tabr = this.createTabABR(Integer.parseInt(debut), Integer.parseInt(fin), parcoursSuffixe);
 	        listTab.add(tabr);
 	    }
-	}*/
+	}
 
 	public void createFileABR(ABR tabArbre) {
 		File f = new File("bin/exemples/figure1.txt");
@@ -55,8 +53,8 @@ public class Controller {
 	/*public void displayTABR(TabABR tableauABR) {
 		for(Iterator iterator = tableauABR.getListeABR().iterator(); iterator.hasNext(); ) {
 			System.out.println(iterator);
-		}*/
-	}
+		}
+	}*/
 
 	public TabABR createTabABR(int debut, int fin, List<Integer> parcoursSuffixe) {
 		TabABR tabr = new TabABR();
