@@ -69,6 +69,24 @@ public class Controller {
 		}
 	}
 
+	public void addListTABRintoNewFile(List<TabABR> listetabr, String nomFichier) {
+		File f = new File(nomFichier);
+		try
+		{
+			FileWriter fw = new FileWriter (f, true);
+			for (TabABR tabr: listetabr) {
+				fw.write (toStringTABR(tabr));
+			}
+			fw.write ("\r\n");
+
+			fw.close();
+		}
+		catch (IOException exception)
+		{
+			System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
+		}
+	}
+
 	public TabABR createTabABR(int debut, int fin, List<Integer> parcoursSuffixe) {
 		TabABR tabr = new TabABR();
 		tabr.setFin(fin);
@@ -141,6 +159,32 @@ public class Controller {
 		}
 
 		return min + ":" + max + ";" + list.toString().replace("[", "").replace("]", "").replace(", ",":");
+	}
+
+	public TabABR createTabrByAbr(ABR abr) {
+		TabABR tabr = new TabABR();
+		this.parcoursSuffixe.clear();
+		List<Integer> list = this.getParcoursSuffixe(abr);
+		System.out.println(list.toString().replace("[", "").replace("]", "").replace(", ",":"));
+		int min = list.get(0);
+		int max = list.get(0);
+
+		for(Integer i: list) {
+			if (i < min) min = i;
+			if (i > max) max = i;
+		}
+		tabr.setArbre(abr);
+		tabr.setDebut(min);
+		tabr.setFin(max);
+		return tabr;
+	}
+
+	public String toStringListTABR(List<TabABR> listtabr){
+		String res = "";
+		for (TabABR tabr: listtabr) {
+			res = res + this.toStringTABR(tabr) + "\n";
+		}
+		return res;
 	}
 
 	public String toStringTABR(TabABR tabr){
@@ -231,6 +275,115 @@ public class Controller {
 		if(nbr == abr.getRacine()) {
 			System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà");
 		}
+		return abr;
+	}
+
+	public List<TabABR> suppressionEntierIntoTabr(int nbr, List<TabABR> liste) {
+		boolean intervalleOk = false;
+		TabABR res = null;
+
+		for (TabABR tabr: liste) {
+			if (nbr <= tabr.getFin() && nbr >= tabr.getDebut()){
+				int index = liste.indexOf(tabr);
+				intervalleOk = true;
+				ABR newAbr = this.suppressionEntierAbr(nbr, tabr.getArbre());
+				tabr.setArbre(newAbr);
+				System.out.println(this.toStringTABR(tabr));
+				liste.set(index, tabr);
+			}
+		}
+		if (!intervalleOk) System.out.println("Erreur pendant la suppression, l'élément que vous voulez supprimer n'appartient à aucun intervalle");
+
+		return null;
+	}
+
+	private ABR suppressionEntierAbr(int nbr, ABR abr) {
+		boolean nbrExist = this.isElementExist(nbr, abr);
+		if (!nbrExist) {
+			System.out.println("Erreur pendant la suppression, l'élément que vous voulez supprimer n'existe pas");
+			return abr;
+		}
+		if(nbr < abr.getRacine()) {
+			if(abr.getSag() != null) {
+				abr.setSag(suppressionEntierAbr(nbr, abr.getSag()));
+			}
+		}
+		if(nbr > abr.getRacine()) {
+			if(abr.getSad() != null) {
+				abr.setSad(suppressionEntierAbr(nbr, abr.getSad()));
+			}
+		}
+		if(nbr == abr.getRacine()) {
+			if(abr.getSag() == null && abr.getSad() != null) {
+				abr.setRacine(abr.getSad().getRacine());
+				abr.setSag(abr.getSad().getSag());
+				abr.setSad(abr.getSad().getSad());
+			}
+			if(abr.getSad() == null && abr.getSag() != null) {
+				abr.setRacine(abr.getSag().getRacine());
+				abr.setSag(abr.getSag().getSag());
+				abr.setSad(abr.getSag().getSad());
+			}
+			if(abr.getSag() != null && abr.getSad() != null) {
+				int maxValueAbr = this.getMaxValueAbr(abr.getSag());
+				suppressionEntierAbr(maxValueAbr, abr.getSag());
+				abr.setRacine(maxValueAbr);
+			}
+			if(abr.getSag() == null && abr.getSad() == null) {
+				abr = null;
+			}
+			System.out.println("Elément supprimé avec succès");
+		}
+		return abr;
+	}
+
+	private boolean isElementExist(int nbr, ABR abr) {
+		boolean result = false;
+		if(nbr < abr.getRacine()) {
+			if(abr.getSag() != null) {
+				result = isElementExist(nbr, abr.getSag());
+			}
+		}
+		if(nbr > abr.getRacine()) {
+			if(abr.getSad() != null) {
+				result = isElementExist(nbr, abr.getSad());
+			}
+		}
+		if(nbr == abr.getRacine()) {
+			result = true;
+		}
+		return result;
+	}
+
+	private int getMaxValueAbr(ABR abr) {
+		List<Integer> list = this.getParcoursSuffixe(abr);
+		int max = list.get(0);
+		for(Integer i: list) {
+			if (i > max) max = i;
+		}
+		return max;
+	}
+
+	public List<TabABR> fusionCasesTabr(int indice, List<TabABR> liste) {
+		TabABR tabABR = liste.get(indice);
+		tabABR.setFin(liste.get(indice+1).getFin());
+		ABR newArbre = this.fusionAbr(tabABR.getArbre(), liste.get(indice + 1).getArbre());
+		tabABR.setArbre(newArbre);
+		liste.set(indice, tabABR);
+		liste.remove(indice+1);
+		return liste;
+	}
+
+	public ABR fusionAbr(ABR abr1, ABR abr2) {
+		List<Integer> list = this.getParcoursSuffixe(abr2);
+		Collections.reverse(list);
+		for (Integer nbr: list) {
+			this.insertionEntierAbr(nbr, abr1);
+		}
+		return abr1;
+	}
+
+	public ABR equilibreABR(ABR abr) {
 		return abr;
 	}
 }

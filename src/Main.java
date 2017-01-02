@@ -35,10 +35,13 @@ public class Main {
 		arbre.setRacine(160);
 		arbre.setSag(abrSAG);
 		arbre.setSad(abrSAD);
+		TabABR newtabr = myController.createTabrByAbr(arbre);
+		ArrayList<TabABR> listeTabr = new ArrayList<TabABR>();
+		listeTabr.add(newtabr);
 
 		System.out.println("--------- TABR VERS FICHIER --------");
 		/* 2. TABR vers fichier */
-		myController.createFileABR(arbre);
+		myController.addListTABRintoNewFile(listeTabr, "bin/exemples/figure2.txt");
 		System.out.println("------------------------------------");
 
 		System.out.println("--------- AFFICHER TABR ------------");
@@ -65,11 +68,39 @@ public class Main {
 		 */
 		System.out.println("------- 2.1 Génération, sauvegarde et affichage des TABRs ----------");
 
-		System.out.println("--------- INSERTION ENTIER -------------");
+		System.out.println("--------- INSERTION ENTIER ---------");
 		/* 1. insertion d'un entier */
 		int nbr = 21;
 		TabABR tabr = myController.insertionEntierIntoTabr(nbr, liste);
-		//myController.addTABRintoFile(tabr);
+		System.out.println("------------------------------------");
+
+		System.out.println("-------- SUPPRESSION ENTIER --------");
+		/* 2. suppression d'un entier */
+		int nbrSupp = 15;
+		List<TabABR> tabrSupp = myController.suppressionEntierIntoTabr(nbrSupp, liste);
+		System.out.println("------------------------------------");
+
+		System.out.println("---- FUSION DE DEUX CASES TABR -----");
+		/* 3. fusion de deux cases du TABR */
+		int indice = 1;
+		List<TabABR> tabrFusion = myController.fusionCasesTabr(indice, liste);
+		System.out.println(myController.toStringListTABR(tabrFusion));
+		System.out.println("------------------------------------");
+
+		System.out.println("---- EQUILIBRE EN PROFONDEUR ABR ---");
+		/* 3. équilibre en profondeur d'un ABR */
+		ABR abrEquilibre = myController.equilibreABR(arbre);
+		System.out.println(myController.toStringABR(abrEquilibre));
+		System.out.println("------------------------------------");
+
+		System.out.println("----------- ABR VERS TABR ----------");
+		/* 4. ABR vers TABR */
+
+		System.out.println("------------------------------------");
+
+		System.out.println("----------- TABR VERS ABR ----------");
+		/* 5. TABR vers ABR */
+
 		System.out.println("------------------------------------");
 	}
 }
