@@ -383,7 +383,48 @@ public class Controller {
 		return abr1;
 	}
 
-	public ABR equilibreABR(ABR abr) {
-		return abr;
+	/*
+	Retourne un booleen à true si l'arbre est équilibré
+
+	Retourne un booleen à false si l'arbre n'est pas équilibré
+	et affiche alors :
+	1. la valeur d’un nœud v pour lequel l’équilibre en profondeur n’est pas respecté
+	2. la profondeur du sag de v
+	3. la profondeur du sad de v.
+	Note : par convention, la profondeur d’un arbre vide est égale à -1.
+	 */
+	public boolean equilibreABR(ABR abr) {
+		int profondeurSag;
+		int profondeurSad;
+
+		if (abr == null)
+			return true;
+
+		 /* Calcul les hauteurs des deux sous arbres */
+		profondeurSag = hauteur(abr.getSag());
+		profondeurSad = hauteur(abr.getSad());
+
+		if (Math.abs(profondeurSag - profondeurSad) <= 1 && equilibreABR(abr.getSag()) && equilibreABR(abr.getSad())){
+			return true;
+		}else {
+			System.out.println("L'arbre n'est pas équilibré");
+			System.out.println("1. Le noeud " + abr.getRacine() + " à une profondeur non conforme");
+			System.out.println("2. La profondeur du sag de " + abr.getRacine() + " est de : " + profondeurSag);
+			System.out.println("3. La profondeur du sad de " + abr.getRacine() + " est de : " + profondeurSad);
+		}
+
+		return false;
+	}
+
+	private int hauteur(ABR abr)
+	{
+		if (abr == null)
+			return 0;
+
+        /*
+        hauteur = 1 + max entre hauteur de gauche et hauteur de droite)
+        */
+		int res = 1 + Math.max(hauteur(abr.getSag()), hauteur(abr.getSad()));
+		return res;
 	}
 }

@@ -88,18 +88,17 @@ public class Main {
 		System.out.println("------------------------------------");
 
 		System.out.println("---- EQUILIBRE EN PROFONDEUR ABR ---");
-		/* 3. équilibre en profondeur d'un ABR */
-		ABR abrEquilibre = myController.equilibreABR(arbre);
-		System.out.println(myController.toStringABR(abrEquilibre));
+		/* 4. équilibre en profondeur d'un ABR */
+		myController.equilibreABR(tabrFusion.get(1).getArbre());
 		System.out.println("------------------------------------");
 
 		System.out.println("----------- ABR VERS TABR ----------");
-		/* 4. ABR vers TABR */
+		/* 5. ABR vers TABR */
 
 		System.out.println("------------------------------------");
 
 		System.out.println("----------- TABR VERS ABR ----------");
-		/* 5. TABR vers ABR */
+		/* 6. TABR vers ABR */
 
 		System.out.println("------------------------------------");
 	}
