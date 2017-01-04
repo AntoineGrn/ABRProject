@@ -24,6 +24,7 @@ public class Main {
 		abrSAG.setRacine(155);
 		ABR abrSAD2 = new ABR();
 		abrSAD2.setRacine(175);
+		abrSAD2.setSad(new ABR(180, null, null));
 		ABR abrSAD3 = new ABR();
 		abrSAD3.setRacine(161);
 		ABR abrSAD = new ABR();
@@ -89,17 +90,28 @@ public class Main {
 
 		System.out.println("---- EQUILIBRE EN PROFONDEUR ABR ---");
 		/* 4. équilibre en profondeur d'un ABR */
-		myController.equilibreABR(tabrFusion.get(1).getArbre());
+		boolean resultEquilibre = myController.equilibreABR(arbre);
+		if (resultEquilibre) {
+			System.out.println("L'abre est équilibré");
+		}
 		System.out.println("------------------------------------");
 
 		System.out.println("----------- ABR VERS TABR ----------");
 		/* 5. ABR vers TABR */
-
+		int min = tabrFusion.get(1).getDebut();
+		int max = tabrFusion.get(1).getFin();
+		// la liste d'intervalle doit contenir des valeurs rangées dans l'ordre croissant et compris entre min et max
+		List<Integer> listeIntervalle = new ArrayList<>();
+		listeIntervalle.add(tabrFusion.get(1).getDebut()+10);
+		listeIntervalle.add(tabrFusion.get(1).getDebut()+50);
+		List<TabABR> tabABRList = myController.transformABRtoTABR(tabrFusion.get(1).getArbre(), min, max, listeIntervalle);
+		System.out.println(myController.toStringListTABR(tabABRList));
 		System.out.println("------------------------------------");
 
 		System.out.println("----------- TABR VERS ABR ----------");
 		/* 6. TABR vers ABR */
-
+		TabABR tabrResult = myController.transformTABRtoABR(tabABRList);
+		System.out.println(myController.toStringTABR(tabrResult));
 		System.out.println("------------------------------------");
 	}
 }

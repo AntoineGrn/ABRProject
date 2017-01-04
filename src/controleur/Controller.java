@@ -5,8 +5,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import model.ABR;
 import model.TabABR;
+
+import javax.swing.table.TableRowSorter;
 
 public class Controller {
 	List<Integer> parcoursSuffixe = new ArrayList<Integer>();
@@ -375,6 +379,7 @@ public class Controller {
 	}
 
 	public ABR fusionAbr(ABR abr1, ABR abr2) {
+		this.parcoursSuffixe.clear();
 		List<Integer> list = this.getParcoursSuffixe(abr2);
 		Collections.reverse(list);
 		for (Integer nbr: list) {
@@ -426,5 +431,73 @@ public class Controller {
         */
 		int res = 1 + Math.max(hauteur(abr.getSag()), hauteur(abr.getSad()));
 		return res;
+	}
+
+	public List<TabABR> transformABRtoTABR(ABR abr, int min, int max, List<Integer> listeIntervalle) {
+		List<TabABR> listeTabr = new ArrayList<TabABR>();
+		for (int i = 0; i <= listeIntervalle.size()-1; i++) {
+			if (i == 0) {
+				TabABR tabr1 = new TabABR();
+				// récupération du parcours suffixe de l'abre
+				List<Integer> parcoursSuffixe = this.getParcoursSuffixe(abr);
+				Integer indexFin = listeIntervalle.get(i);
+				// filtrage sur les valeurs qui ne sont pas dans l'intervalle choisi
+				List<Integer> collect = parcoursSuffixe.stream().filter(nombre -> nombre >= min && nombre <= indexFin).collect(Collectors.toList());
+				// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
+				ABR abr1 = this.createABR(collect);
+				// ajout du nouvel arbre au tabr
+				tabr1.setArbre(abr1);
+				tabr1.setDebut(min);
+				tabr1.setFin(listeIntervalle.get(i));
+				listeTabr.add(tabr1);
+			} else{
+				TabABR tabr3 = new TabABR();
+				// récupération du parcours suffixe de l'abre
+				List<Integer> parcoursSuffixe = this.getParcoursSuffixe(abr);
+				Integer indexDebut = listeIntervalle.get(i-1)+1;
+				Integer indexFin = listeIntervalle.get(i);
+				// filtrage sur les valeurs qui ne sont pas dans l'intervalle choisi
+				List<Integer> collect = parcoursSuffixe.stream().filter(nombre -> nombre >= indexDebut && nombre <= indexFin).collect(Collectors.toList());
+				// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
+				ABR abr3 = this.createABR(collect);
+				// ajout du nouvel arbre au tabr
+				tabr3.setArbre(abr3);
+				tabr3.setDebut(listeIntervalle.get(i-1)+1);
+				tabr3.setFin(listeIntervalle.get(i));
+				listeTabr.add(tabr3);
+			}
+			if(i == listeIntervalle.size()-1){
+				TabABR tabr2 = new TabABR();
+				// récupération du parcours suffixe de l'abre
+				List<Integer> parcoursSuffixe = this.getParcoursSuffixe(abr);
+				Integer indexDebut = listeIntervalle.get(i)+1;
+				// filtrage sur les valeurs qui ne sont pas dans l'intervalle choisi
+				List<Integer> collect = parcoursSuffixe.stream().filter(nombre -> nombre >= indexDebut && nombre <= max).collect(Collectors.toList());
+				// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
+				ABR abr2 = this.createABR(collect);
+				// ajout du nouvel arbre au tabr
+				tabr2.setArbre(abr2);
+				tabr2.setDebut(listeIntervalle.get(i)+1);
+				tabr2.setFin(max);
+				listeTabr.add(tabr2);
+			}
+		}
+		return listeTabr;
+	}
+
+	public TabABR transformTABRtoABR(List<TabABR> tabABRList) {
+		TabABR newTabr = new TabABR();
+		ABR newAbr = new ABR();
+		newTabr.setDebut(tabABRList.get(0).getDebut());
+		newTabr.setFin(tabABRList.get(tabABRList.size()-1).getFin());
+		for (TabABR tabr: tabABRList) {
+			if(tabABRList.indexOf(tabr) == 0){
+				newAbr = tabr.getArbre();
+			}else {
+				newAbr = this.fusionAbr(newAbr, tabr.getArbre());
+			}
+		}
+		newTabr.setArbre(newAbr);
+		return newTabr;
 	}
 }
