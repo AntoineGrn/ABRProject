@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import model.ABR;
 import model.TabABR;
 
+import javax.swing.*;
 import javax.swing.table.TableRowSorter;
 
 public class Controller {
@@ -141,9 +142,11 @@ public class Controller {
 	public List<Integer> getParcoursSuffixe(ABR abr) {
 
 		if (abr.getSag() != null){
+			this.parcoursSuffixe.clear();
 			this.parcoursSuffixe = this.getParcoursSuffixe(abr.getSag());
 		}
 		if (abr.getSad() != null) {
+			this.parcoursSuffixe.clear();
 			this.parcoursSuffixe = this.getParcoursSuffixe(abr.getSad());
 		}
 		this.parcoursSuffixe.add(abr.getRacine());
@@ -252,7 +255,13 @@ public class Controller {
 				res = tabr;
 			}
 		}
-		if (!intervalleOk) System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter n'appartient à aucun intervalle");
+		if (!intervalleOk) {
+			JOptionPane.showMessageDialog(null,
+					"Erreur pendant l'insertion, l'élément que vous voulez ajouter n'appartient à aucun intervalle",
+					"Résultat",
+					JOptionPane.PLAIN_MESSAGE);
+			System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter n'appartient à aucun intervalle");
+		}
 
 		return res;
 	}
@@ -262,6 +271,10 @@ public class Controller {
 			if(abr.getSag() == null) {
 				ABR nouvelElem = new ABR(nbr, null, null);
 				abr.setSag(nouvelElem);
+				JOptionPane.showMessageDialog(null,
+						"Element " + nbr + " ajouté avec succès",
+						"Résultat",
+						JOptionPane.PLAIN_MESSAGE);
 				System.out.println("Element ajouté avec succès");
 			}else {
 				insertionEntierAbr(nbr, abr.getSag());
@@ -271,12 +284,20 @@ public class Controller {
 			if(abr.getSad() == null) {
 				ABR nouvelElem = new ABR(nbr, null, null);
 				abr.setSad(nouvelElem);
+				JOptionPane.showMessageDialog(null,
+						"Element " + nbr + " ajouté avec succès",
+						"Résultat",
+						JOptionPane.PLAIN_MESSAGE);
 				System.out.println("Element ajouté avec succès");
 			}else {
 				insertionEntierAbr(nbr, abr.getSad());
 			}
 		}
 		if(nbr == abr.getRacine()) {
+			JOptionPane.showMessageDialog(null,
+					"Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà",
+					"Résultat",
+					JOptionPane.PLAIN_MESSAGE);
 			System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà");
 		}
 		return abr;
@@ -296,14 +317,24 @@ public class Controller {
 				liste.set(index, tabr);
 			}
 		}
-		if (!intervalleOk) System.out.println("Erreur pendant la suppression, l'élément que vous voulez supprimer n'appartient à aucun intervalle");
+		if (!intervalleOk){
+			JOptionPane.showMessageDialog(null,
+					"Erreur pendant la suppression, l'élément que vous voulez supprimer n'appartient à aucun intervalle",
+					"Résultat",
+					JOptionPane.PLAIN_MESSAGE);
+			System.out.println("Erreur pendant la suppression, l'élément que vous voulez supprimer n'appartient à aucun intervalle");
+		}
 
-		return null;
+		return liste;
 	}
 
 	private ABR suppressionEntierAbr(int nbr, ABR abr) {
 		boolean nbrExist = this.isElementExist(nbr, abr);
 		if (!nbrExist) {
+			JOptionPane.showMessageDialog(null,
+					"Erreur pendant la suppression, l'élément que vous voulez supprimer n'existe pas",
+					"Résultat",
+					JOptionPane.PLAIN_MESSAGE);
 			System.out.println("Erreur pendant la suppression, l'élément que vous voulez supprimer n'existe pas");
 			return abr;
 		}
@@ -320,20 +351,17 @@ public class Controller {
 		if(nbr == abr.getRacine()) {
 			if(abr.getSag() == null && abr.getSad() != null) {
 				abr.setRacine(abr.getSad().getRacine());
-				abr.setSag(abr.getSad().getSag());
-				abr.setSad(abr.getSad().getSad());
-			}
-			if(abr.getSad() == null && abr.getSag() != null) {
+				abr.setSag(abr.getSad().getSag() != null ? abr.getSad().getSag() : null);
+				abr.setSad(abr.getSad().getSad() != null ? abr.getSad().getSad() : null);
+			} else if(abr.getSad() == null && abr.getSag() != null) {
 				abr.setRacine(abr.getSag().getRacine());
-				abr.setSag(abr.getSag().getSag());
-				abr.setSad(abr.getSag().getSad());
-			}
-			if(abr.getSag() != null && abr.getSad() != null) {
+				abr.setSag(abr.getSag().getSag() != null ? abr.getSag().getSag() : null);
+				abr.setSad(abr.getSag() != null ? abr.getSag().getSad() : null);
+			}else if(abr.getSag() != null && abr.getSad() != null) {
 				int maxValueAbr = this.getMaxValueAbr(abr.getSag());
 				suppressionEntierAbr(maxValueAbr, abr.getSag());
 				abr.setRacine(maxValueAbr);
-			}
-			if(abr.getSag() == null && abr.getSad() == null) {
+			}else if(abr.getSag() == null && abr.getSad() == null) {
 				abr = null;
 			}
 			System.out.println("Elément supprimé avec succès");
@@ -360,6 +388,7 @@ public class Controller {
 	}
 
 	private int getMaxValueAbr(ABR abr) {
+		this.parcoursSuffixe.clear();
 		List<Integer> list = this.getParcoursSuffixe(abr);
 		int max = list.get(0);
 		for(Integer i: list) {
@@ -412,6 +441,13 @@ public class Controller {
 		if (Math.abs(profondeurSag - profondeurSad) <= 1 && equilibreABR(abr.getSag()) && equilibreABR(abr.getSad())){
 			return true;
 		}else {
+			JOptionPane.showMessageDialog(null,
+					"L'arbre n'est pas équilibré \n" +
+							"1. Le noeud " + abr.getRacine() + " à une profondeur non conforme \n" +
+							"2. La profondeur du sag de " + abr.getRacine() + " est de : " + profondeurSag + "\n" +
+							"3. La profondeur du sad de " + abr.getRacine() + " est de : " + profondeurSad,
+					"Résultat",
+					JOptionPane.PLAIN_MESSAGE);
 			System.out.println("L'arbre n'est pas équilibré");
 			System.out.println("1. Le noeud " + abr.getRacine() + " à une profondeur non conforme");
 			System.out.println("2. La profondeur du sag de " + abr.getRacine() + " est de : " + profondeurSag);
@@ -439,47 +475,56 @@ public class Controller {
 			if (i == 0) {
 				TabABR tabr1 = new TabABR();
 				// récupération du parcours suffixe de l'abre
+				this.parcoursSuffixe.clear();
 				List<Integer> parcoursSuffixe = this.getParcoursSuffixe(abr);
 				Integer indexFin = listeIntervalle.get(i);
 				// filtrage sur les valeurs qui ne sont pas dans l'intervalle choisi
 				List<Integer> collect = parcoursSuffixe.stream().filter(nombre -> nombre >= min && nombre <= indexFin).collect(Collectors.toList());
-				// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
-				ABR abr1 = this.createABR(collect);
-				// ajout du nouvel arbre au tabr
-				tabr1.setArbre(abr1);
-				tabr1.setDebut(min);
-				tabr1.setFin(listeIntervalle.get(i));
-				listeTabr.add(tabr1);
+				if(collect.size() > 0 ) {
+					// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
+					ABR abr1 = this.createABR(collect);
+					// ajout du nouvel arbre au tabr
+					tabr1.setArbre(abr1);
+					tabr1.setDebut(min);
+					tabr1.setFin(listeIntervalle.get(i));
+					listeTabr.add(tabr1);
+				}
 			} else{
 				TabABR tabr3 = new TabABR();
 				// récupération du parcours suffixe de l'abre
+				this.parcoursSuffixe.clear();
 				List<Integer> parcoursSuffixe = this.getParcoursSuffixe(abr);
 				Integer indexDebut = listeIntervalle.get(i-1)+1;
 				Integer indexFin = listeIntervalle.get(i);
 				// filtrage sur les valeurs qui ne sont pas dans l'intervalle choisi
 				List<Integer> collect = parcoursSuffixe.stream().filter(nombre -> nombre >= indexDebut && nombre <= indexFin).collect(Collectors.toList());
 				// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
-				ABR abr3 = this.createABR(collect);
-				// ajout du nouvel arbre au tabr
-				tabr3.setArbre(abr3);
-				tabr3.setDebut(listeIntervalle.get(i-1)+1);
-				tabr3.setFin(listeIntervalle.get(i));
-				listeTabr.add(tabr3);
+				if(collect.size() > 0 ) {
+					ABR abr3 = this.createABR(collect);
+					// ajout du nouvel arbre au tabr
+					tabr3.setArbre(abr3);
+					tabr3.setDebut(listeIntervalle.get(i-1)+1);
+					tabr3.setFin(listeIntervalle.get(i));
+					listeTabr.add(tabr3);
+				}
 			}
 			if(i == listeIntervalle.size()-1){
 				TabABR tabr2 = new TabABR();
 				// récupération du parcours suffixe de l'abre
+				this.parcoursSuffixe.clear();
 				List<Integer> parcoursSuffixe = this.getParcoursSuffixe(abr);
 				Integer indexDebut = listeIntervalle.get(i)+1;
 				// filtrage sur les valeurs qui ne sont pas dans l'intervalle choisi
 				List<Integer> collect = parcoursSuffixe.stream().filter(nombre -> nombre >= indexDebut && nombre <= max).collect(Collectors.toList());
-				// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
-				ABR abr2 = this.createABR(collect);
-				// ajout du nouvel arbre au tabr
-				tabr2.setArbre(abr2);
-				tabr2.setDebut(listeIntervalle.get(i)+1);
-				tabr2.setFin(max);
-				listeTabr.add(tabr2);
+				if(collect.size() > 0 ) {
+					// création du nouvel arbre contenant les valeurs comprises dans l'intervalle choisi
+					ABR abr2 = this.createABR(collect);
+					// ajout du nouvel arbre au tabr
+					tabr2.setArbre(abr2);
+					tabr2.setDebut(listeIntervalle.get(i)+1);
+					tabr2.setFin(max);
+					listeTabr.add(tabr2);
+				}
 			}
 		}
 		return listeTabr;
