@@ -126,7 +126,9 @@ public class Main extends JFrame{
 
             CustomFrame1 frame2 = new CustomFrame1("2. TABR vers fichier");
 
-            String s = (String)JOptionPane.showInputDialog(frame2, "Veuillez saisir l'emplacement du fichier dans lequel vous voulez sauvegarder le TABR : \nExemple : bin/exemples/figure2.txt ");
+            String s = (String)JOptionPane.showInputDialog(frame2, myController.toStringListTABR(listeTabr),"Création d'un TABR manuellement.\n" +
+                    "Veuillez saisir l'emplacement du fichier dans lequel vous voulez sauvegarder le TABR : \n" +
+                    "Exemple : bin/exemples/figure2.txt ");
 
 			/* 2. TABR vers fichier */
 
@@ -171,7 +173,7 @@ public class Main extends JFrame{
 			/* 3. afficher TABR */
             JOptionPane.showMessageDialog(frame2,
                     myController.toStringABR(arbre),
-                    "Résultat",
+                    "Résultat (affichage du TABR présent dans le fichier figure2.txt)",
                     JOptionPane.PLAIN_MESSAGE);
 
 		}
@@ -183,8 +185,21 @@ public class Main extends JFrame{
 		 */
 		public  void    actionPerformed(ActionEvent e)
 		{
-			System.out.println("Ici !");
-		}
+            Controller myController = new Controller();
+            System.out.println("4. Générer TABR aléatoire");
+
+            CustomFrame1 frame2 = new CustomFrame1("4. Générer TABR aléatoire");
+            String n = JOptionPane.showInputDialog(frame2, "Veuillez saisir le nombre n représentant le nombre de cases du TABR : ");
+            String m = JOptionPane.showInputDialog(frame2, "Veuillez saisir le nombre m représentant le nombre max du TABR : ");
+
+            int nInt = Integer.parseInt(n);
+            int mInt = Integer.parseInt(m);
+            List<TabABR> tabrAleatoire = myController.createTABRAleatoire(nInt, mInt);
+            JOptionPane.showMessageDialog(frame2,
+                    myController.toStringListTABR(tabrAleatoire),
+                    "Résultat",
+                    JOptionPane.PLAIN_MESSAGE);
+        }
 	}
 	public  class   TraitementBut5 implements   ActionListener
 	{

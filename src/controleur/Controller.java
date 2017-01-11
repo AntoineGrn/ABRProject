@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import model.ABR;
@@ -209,8 +210,39 @@ public class Controller {
 		return result + abr.getRacine();
 	}
 
-	public void createTABRAleatoire(int n, int m) {
+	public List<TabABR> createTABRAleatoire(int n, int m) {
 		System.out.println("variable n : " + n + "\nvariable m : " + m);
+		List<TabABR> listeTabr = new ArrayList<>();
+		int inter = m/n;
+		for (int i = 0; i < n; i++) {
+			TabABR tabABR = new TabABR();
+			ABR abr = new ABR();
+			if (i==0) {
+				tabABR.setDebut(1);
+				tabABR.setFin(inter);
+			}else if (i==n-1) {
+				tabABR.setDebut(inter*i+1);
+				tabABR.setFin(m);
+			}else {
+				tabABR.setDebut(inter*i+1);
+				tabABR.setFin(inter*(i+1));
+			}
+			abr.setRacine(tabABR.getFin()-(inter/2));
+			Random rand = new Random();
+			int min = 3;
+			int max = tabABR.getFin()-tabABR.getDebut();
+			int nbrElementInter = rand.nextInt((max - min) + 1) + min;
+			for (int index = 0; index <= nbrElementInter; index ++) {
+				Random rand2 = new Random();
+				int min2 = tabABR.getDebut();
+				int max2 = tabABR.getFin();
+				int nbrAInserer = rand2.nextInt((max2 - min2) + 1) + min2;
+				insertionEntierAbr(nbrAInserer, abr);
+			}
+			tabABR.setArbre(abr);
+			listeTabr.add(tabABR);
+		}
+		return listeTabr;
 	}
 
 	public boolean verificationTABR(List<TabABR> listetabr) {
@@ -267,39 +299,46 @@ public class Controller {
 	}
 
 	private ABR insertionEntierAbr(int nbr, ABR abr) {
-		if(nbr < abr.getRacine()) {
-			if(abr.getSag() == null) {
-				ABR nouvelElem = new ABR(nbr, null, null);
-				abr.setSag(nouvelElem);
+		if(abr!=null) {
+			if(nbr < abr.getRacine()) {
+				if(abr.getSag() == null) {
+					ABR nouvelElem = new ABR(nbr, null, null);
+					abr.setSag(nouvelElem);
+					JOptionPane.showMessageDialog(null,
+							"Element " + nbr + " ajouté avec succès",
+							"Résultat",
+							JOptionPane.PLAIN_MESSAGE);
+					System.out.println("Element ajouté avec succès");
+				}else {
+					insertionEntierAbr(nbr, abr.getSag());
+				}
+			}
+			if(nbr > abr.getRacine()) {
+				if(abr.getSad() == null) {
+					ABR nouvelElem = new ABR(nbr, null, null);
+					abr.setSad(nouvelElem);
+					JOptionPane.showMessageDialog(null,
+							"Element " + nbr + " ajouté avec succès",
+							"Résultat",
+							JOptionPane.PLAIN_MESSAGE);
+					System.out.println("Element ajouté avec succès");
+				}else {
+					insertionEntierAbr(nbr, abr.getSad());
+				}
+			}
+			if(nbr == abr.getRacine()) {
 				JOptionPane.showMessageDialog(null,
-						"Element " + nbr + " ajouté avec succès",
+						"Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà",
 						"Résultat",
 						JOptionPane.PLAIN_MESSAGE);
-				System.out.println("Element ajouté avec succès");
-			}else {
-				insertionEntierAbr(nbr, abr.getSag());
+				System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà");
 			}
+		}else {
+			ABR abr2 = new ABR();
+			abr2.setRacine(nbr);
+			abr = abr2;
 		}
-		if(nbr > abr.getRacine()) {
-			if(abr.getSad() == null) {
-				ABR nouvelElem = new ABR(nbr, null, null);
-				abr.setSad(nouvelElem);
-				JOptionPane.showMessageDialog(null,
-						"Element " + nbr + " ajouté avec succès",
-						"Résultat",
-						JOptionPane.PLAIN_MESSAGE);
-				System.out.println("Element ajouté avec succès");
-			}else {
-				insertionEntierAbr(nbr, abr.getSad());
-			}
-		}
-		if(nbr == abr.getRacine()) {
-			JOptionPane.showMessageDialog(null,
-					"Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà",
-					"Résultat",
-					JOptionPane.PLAIN_MESSAGE);
-			System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà");
-		}
+
 		return abr;
 	}
 
