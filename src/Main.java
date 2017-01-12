@@ -126,7 +126,7 @@ public class Main extends JFrame{
 
             CustomFrame1 frame2 = new CustomFrame1("2. TABR vers fichier");
 
-            String s = (String)JOptionPane.showInputDialog(frame2, myController.toStringListTABR(listeTabr),"Création d'un TABR manuellement.\n" +
+            String s = (String)JOptionPane.showInputDialog(frame2, myController.toStringListTABR(listeTabr) + "\nCréation d'un TABR manuellement.\n" +
                     "Veuillez saisir l'emplacement du fichier dans lequel vous voulez sauvegarder le TABR : \n" +
                     "Exemple : bin/exemples/figure2.txt ");
 
@@ -241,9 +241,6 @@ public class Main extends JFrame{
             /* 6. Insertion d'un entier dans un TABR */
             Controller myController = new Controller();
             System.out.println("6. Insertion d'un entier dans un TABR");
-
-            CustomFrame1 frame2 = new CustomFrame1("6. Insertion d'un entier dans un TABR");
-            int entier = Integer.parseInt(JOptionPane.showInputDialog(frame2, "Veuillez saisir un entier à ajouter : "));
             List<TabABR> liste = null;
             try {
                 liste = myController.readFileABR("bin/exemples/figure1.txt");
@@ -252,6 +249,9 @@ public class Main extends JFrame{
             } catch (URISyntaxException e1) {
                 e1.printStackTrace();
             }
+            CustomFrame1 frame2 = new CustomFrame1("6. Insertion d'un entier dans un TABR");
+            int entier = Integer.parseInt(JOptionPane.showInputDialog(frame2, myController.toStringListTABR(liste) + "\nVeuillez saisir un entier à ajouter au TABR : "));
+
             TabABR tabr = myController.insertionEntierIntoTabr(entier, liste);
 
             JOptionPane.showMessageDialog(frame2,
@@ -271,23 +271,24 @@ public class Main extends JFrame{
             /* 7. Suppression d'un entier dans un TABR*/
             Controller myController = new Controller();
             System.out.println("7. Suppression d'un entier dans un TABR");
-
-            CustomFrame1 frame2 = new CustomFrame1("7. Suppression d'un entier dans un TABR");
-            int entier = Integer.parseInt(JOptionPane.showInputDialog(frame2, "Veuillez saisir un entier à supprimer : "));
             List<TabABR> liste = null;
             try {
                 liste = myController.readFileABR("bin/exemples/figure1.txt");
-                List<TabABR> tabrSupp = myController.suppressionEntierIntoTabr(entier, liste);
-                String s = myController.toStringListTABR(tabrSupp);
-                JOptionPane.showMessageDialog(frame2,
-                        s,
-                        "Résultat",
-                        JOptionPane.PLAIN_MESSAGE);
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (URISyntaxException e1) {
                 e1.printStackTrace();
             }
+            CustomFrame1 frame2 = new CustomFrame1("7. Suppression d'un entier dans un TABR");
+            int entier = Integer.parseInt(JOptionPane.showInputDialog(frame2, myController.toStringListTABR(liste) + "\nVeuillez saisir un entier à supprimer du TABR : "));
+
+            List<TabABR> tabrSupp = myController.suppressionEntierIntoTabr(entier, liste);
+            String s = myController.toStringListTABR(tabrSupp);
+
+            JOptionPane.showMessageDialog(frame2,
+                    s,
+                    "Résultat",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
@@ -301,23 +302,24 @@ public class Main extends JFrame{
             /* 8. Fusion de deux cases du TABR*/
             Controller myController = new Controller();
             System.out.println("8. Fusion de deux cases du TABR");
-
-            CustomFrame1 frame2 = new CustomFrame1("8. Fusion de deux cases du TABR");
-            int entier = Integer.parseInt(JOptionPane.showInputDialog(frame2, "Veuillez saisir l'indice de la case du TABR à fusionner avec la suivante : "));
             List<TabABR> liste = null;
             try {
                 liste = myController.readFileABR("bin/exemples/figure1.txt");
-                List<TabABR> tabrFusion = myController.fusionCasesTabr(entier, liste);
-                String s = myController.toStringListTABR(tabrFusion);
-                JOptionPane.showMessageDialog(frame2,
-                        s,
-                        "Résultat",
-                        JOptionPane.PLAIN_MESSAGE);
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (URISyntaxException e1) {
                 e1.printStackTrace();
             }
+            CustomFrame1 frame2 = new CustomFrame1("8. Fusion de deux cases du TABR");
+            int entier = Integer.parseInt(JOptionPane.showInputDialog(frame2, myController.toStringListTABR(liste) + "\nVeuillez saisir l'indice de la case du TABR à fusionner avec la suivante : "));
+
+            List<TabABR> tabrFusion = myController.fusionCasesTabr(entier, liste);
+            String s = myController.toStringListTABR(tabrFusion);
+            JOptionPane.showMessageDialog(frame2,
+                    s,
+                    "Résultat",
+                    JOptionPane.PLAIN_MESSAGE);
+
         }
     }
 
@@ -351,11 +353,12 @@ public class Main extends JFrame{
             arbre.setSad(abrSAD);
 
             CustomFrame1 frame2 = new CustomFrame1("9. Equilibre en profondeur d'un ABR");
-            boolean resultEquilibre = myController.equilibreABR(arbre);
             JOptionPane.showMessageDialog(frame2,
-                    resultEquilibre ? "L'arbre est équilibré" : "L'arbre n'est pas équilibré",
-                    "Résultat",
+                    myController.toStringABR(arbre),
+                    "Test sur l'arbre suivant",
                     JOptionPane.PLAIN_MESSAGE);
+            boolean resultEquilibre = myController.equilibreABR(arbre);
+
 
         }
     }
@@ -370,35 +373,34 @@ public class Main extends JFrame{
             /* 10. ABR vers TABR*/
             Controller myController = new Controller();
             System.out.println("10. ABR vers TABR");
-
-            CustomFrame1 frame2 = new CustomFrame1("10. ABR vers TABR");
-
-            // la liste d'intervalle doit contenir des valeurs rangées dans l'ordre croissant et compris entre min et max
-            List<Integer> listeIntervalle = new ArrayList<>();
-            String s1 = JOptionPane.showInputDialog(frame2, "Veuillez saisir les intervalles de la manière suivante : \nExemple : 19;61");
-            String[] split = s1.split(";");
-            for (String string: split) {
-                int i = Integer.parseInt(string);
-                listeIntervalle.add(i);
-            }
             List<TabABR> liste = null;
             try {
                 liste = myController.readFileABR("bin/exemples/figure1.txt");
-                List<TabABR> tabrFusion = myController.fusionCasesTabr(1, liste);
-                int min = tabrFusion.get(1).getDebut();
-                int max = tabrFusion.get(1).getFin();
-                List<TabABR> tabABRList = myController.transformABRtoTABR(tabrFusion.get(1).getArbre(), min, max, listeIntervalle);
-
-                String s = myController.toStringListTABR(tabABRList);
-                JOptionPane.showMessageDialog(frame2,
-                        s,
-                        "Résultat",
-                        JOptionPane.PLAIN_MESSAGE);
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (URISyntaxException e1) {
                 e1.printStackTrace();
             }
+            CustomFrame1 frame2 = new CustomFrame1("10. ABR vers TABR");
+
+            // la liste d'intervalle doit contenir des valeurs rangées dans l'ordre croissant et compris entre min et max
+            List<Integer> listeIntervalle = new ArrayList<>();
+            String s1 = JOptionPane.showInputDialog(frame2, myController.toStringListTABR(liste) + "\nVeuillez saisir les intervalles de la manière suivante (séparés par des points-virgules et dans l'ordre croissant): \nExemple : 19;61");
+            String[] split = s1.split(";");
+            for (String string: split) {
+                int i = Integer.parseInt(string);
+                listeIntervalle.add(i);
+            }
+            List<TabABR> tabrFusion = myController.fusionCasesTabr(1, liste);
+            int min = tabrFusion.get(1).getDebut();
+            int max = tabrFusion.get(1).getFin();
+            List<TabABR> tabABRList = myController.transformABRtoTABR(tabrFusion.get(1).getArbre(), min, max, listeIntervalle);
+
+            String s = myController.toStringListTABR(tabABRList);
+            JOptionPane.showMessageDialog(frame2,
+                    s,
+                    "Résultat",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
@@ -412,22 +414,25 @@ public class Main extends JFrame{
             /* 11. TABR vers ABR*/
             Controller myController = new Controller();
             System.out.println("11. TABR vers ABR");
-
-            CustomFrame1 frame2 = new CustomFrame1("11. TABR vers ABR");
             List<TabABR> liste = null;
             try {
                 liste = myController.readFileABR("bin/exemples/figure1.txt");
-                TabABR tabrResult = myController.transformTABRtoABR(liste);
-                String s = myController.toStringTABR(tabrResult);
-                JOptionPane.showMessageDialog(frame2,
-                        s,
-                        "Résultat",
-                        JOptionPane.PLAIN_MESSAGE);
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (URISyntaxException e1) {
                 e1.printStackTrace();
             }
+            CustomFrame1 frame2 = new CustomFrame1("11. TABR vers ABR");
+            JOptionPane.showMessageDialog(frame2,
+                    "TABR sur lequel est effectué la transformation : \n" + myController.toStringListTABR(liste),
+                    "TABR vers ABR",
+                    JOptionPane.PLAIN_MESSAGE);
+            TabABR tabrResult = myController.transformTABRtoABR(liste);
+            String s = myController.toStringTABR(tabrResult);
+            JOptionPane.showMessageDialog(frame2,
+                    s,
+                    "Résultat",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 

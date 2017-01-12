@@ -237,7 +237,7 @@ public class Controller {
 				int min2 = tabABR.getDebut();
 				int max2 = tabABR.getFin();
 				int nbrAInserer = rand2.nextInt((max2 - min2) + 1) + min2;
-				insertionEntierAbr(nbrAInserer, abr);
+				insertionEntierAbrSansAlerte(nbrAInserer, abr);
 			}
 			tabABR.setArbre(abr);
 			listeTabr.add(tabABR);
@@ -331,6 +331,36 @@ public class Controller {
 						"Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà",
 						"Résultat",
 						JOptionPane.PLAIN_MESSAGE);
+				System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà");
+			}
+		}else {
+			ABR abr2 = new ABR();
+			abr2.setRacine(nbr);
+			abr = abr2;
+		}
+
+		return abr;
+	}
+
+	private ABR insertionEntierAbrSansAlerte(int nbr, ABR abr) {
+		if(abr!=null) {
+			if(nbr < abr.getRacine()) {
+				if(abr.getSag() == null) {
+					ABR nouvelElem = new ABR(nbr, null, null);
+					abr.setSag(nouvelElem);
+				}else {
+					insertionEntierAbr(nbr, abr.getSag());
+				}
+			}
+			if(nbr > abr.getRacine()) {
+				if(abr.getSad() == null) {
+					ABR nouvelElem = new ABR(nbr, null, null);
+					abr.setSad(nouvelElem);
+				}else {
+					insertionEntierAbr(nbr, abr.getSad());
+				}
+			}
+			if(nbr == abr.getRacine()) {
 				System.out.println("Erreur pendant l'insertion, l'élément que vous voulez ajouter existe déjà");
 			}
 		}else {
