@@ -349,7 +349,7 @@ public class Controller {
 					ABR nouvelElem = new ABR(nbr, null, null);
 					abr.setSag(nouvelElem);
 				}else {
-					insertionEntierAbr(nbr, abr.getSag());
+					insertionEntierAbrSansAlerte(nbr, abr.getSag());
 				}
 			}
 			if(nbr > abr.getRacine()) {
@@ -357,7 +357,7 @@ public class Controller {
 					ABR nouvelElem = new ABR(nbr, null, null);
 					abr.setSad(nouvelElem);
 				}else {
-					insertionEntierAbr(nbr, abr.getSad());
+					insertionEntierAbrSansAlerte(nbr, abr.getSad());
 				}
 			}
 			if(nbr == abr.getRacine()) {
